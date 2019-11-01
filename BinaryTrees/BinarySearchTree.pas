@@ -170,11 +170,13 @@ begin
     end; 
 end;
 
-function ArrayToBST(vector:array; node:BSTPointer):BSTPointer;
+function ArrayToBST(vector:array of integer; node:BSTPointer):BSTPointer;
 var
   index: integer;
 begin
-
+  for index := 1 to size do
+    node := AddNode(vector[index], node); 
+  ArrayToBST := node;
 end;
 
 function BinarySearch(value:integer; node: BSTPointer):boolean;
@@ -220,6 +222,10 @@ begin
     end; 
   write(']');
 
+  root := ArrayToBST(list, root);
 
-
+  writeln('Count all nodes: ', CountNodes(root));
+  writeln('Count all even nodes: ', CountEvenNodes(root));
+  writeln('Count all even nodes: ', CountOddNodes(root));
+  writeln('Even + Odds: ', CountOddNodes(root) + CountEvenNodes(root)) 
 end.
