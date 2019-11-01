@@ -1,7 +1,7 @@
 program BinarySearchTree;
 
 const 
-  SIZE = 100;
+  SIZE = 10;
 
 {*Type Definition*}
 type
@@ -170,13 +170,20 @@ begin
     end; 
 end;
 
-function ArrayToBST(vector:array of integer; node:BSTPointer):BSTPointer;
-var
-  index: integer;
+function CountLeafs(node:BSTPointer):integer;
 begin
-  for index := 1 to size do
-    node := AddNode(vector[index], node); 
-  ArrayToBST := node;
+  if (node = nil) then
+    begin
+      CountLeafs := 0;
+    end
+  else if (node^.Left = nil) and (node^.Right = nil) then
+    begin
+      CountLeafs := 1;
+    end
+  else
+    begin
+      CountLeafs := CountLeafs(node^.Left) + CountLeafs(node^.Right); 
+    end; 
 end;
 
 function BinarySearch(value:integer; node: BSTPointer):boolean;
@@ -202,6 +209,16 @@ begin
     end;
 end;
 
+function ArrayToBST(vector:array of integer; node:BSTPointer):BSTPointer;
+var
+  index: integer;
+begin
+  for index := 1 to size do
+    node := AddNode(vector[index], node); 
+  ArrayToBST := node;
+end;
+
+{*MAIN*}
 var
   root: BSTPointer;
   list: array[1..SIZE] of integer;
@@ -220,12 +237,13 @@ begin
     begin
       write(' ,', list[index]);
     end; 
-  write(']');
+  writeln(']');
 
   root := ArrayToBST(list, root);
 
   writeln('Count all nodes: ', CountNodes(root));
   writeln('Count all even nodes: ', CountEvenNodes(root));
-  writeln('Count all even nodes: ', CountOddNodes(root));
-  writeln('Even + Odds: ', CountOddNodes(root) + CountEvenNodes(root)) 
+  writeln('Count all odd nodes: ', CountOddNodes(root));
+  writeln('Even + Odds: ', CountOddNodes(root) + CountEvenNodes(root));
+  writeln('Count leafs: ', CountLeafs(root));
 end.
