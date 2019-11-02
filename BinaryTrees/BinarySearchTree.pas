@@ -20,8 +20,7 @@ var
   aux: BSTPointer;
 begin
   if (node = nil) then
-    begin
-      new(aux);
+    begin new(aux);
       aux^.Info := value;
       aux^.Left := nil;
       aux^.Right := nil;
@@ -209,13 +208,25 @@ begin
     end;
 end;
 
-function ArrayToBST(vector:array of integer; node:BSTPointer):BSTPointer;
+function ArrayToBST(V: array of Integer; node:BSTPointer):BSTPointer;
 var
   index: integer;
 begin
-  for index := 1 to size do
-    node := AddNode(vector[index], node); 
+  for index := 0 to (SIZE - 1) do
+    begin 
+      node := AddNode(V[index], node); 
+    end;
   ArrayToBST := node;
+end;
+
+procedure InOrder(node:BSTPointer);
+begin
+  if (node <> nil) then
+    begin
+      InOrder(node^.Left);
+      writeln(node^.Info);
+      InOrder(node^.Right);
+    end;
 end;
 
 {*MAIN*}
@@ -232,18 +243,21 @@ begin
     list[index] := Random(100);
 
   {*Prints the randomized vector*}
+  writeln('Random list:');
   write('[', list[1]); 
-  for index :=2 to SIZE do
+  for index := 2 to SIZE do
     begin
       write(' ,', list[index]);
     end; 
   writeln(']');
 
   root := ArrayToBST(list, root);
+  InOrder(root);
 
   writeln('Count all nodes: ', CountNodes(root));
   writeln('Count all even nodes: ', CountEvenNodes(root));
   writeln('Count all odd nodes: ', CountOddNodes(root));
   writeln('Even + Odds: ', CountOddNodes(root) + CountEvenNodes(root));
   writeln('Count leafs: ', CountLeafs(root));
+
 end.
