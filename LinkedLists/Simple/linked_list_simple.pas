@@ -81,6 +81,10 @@ begin
     begin
       writeln('AddToX: ', X, ' Out of range');
     end
+  else if (X = 1) or (X = SizeOfList(head)) then
+    begin
+      writeln('Use AddToStart to add to head or tail');
+    end
   else
     begin 
       nav := head;
@@ -98,9 +102,39 @@ begin
     end;
 end;
 
-{*Edition*}
 {*Deletion*}
-{*Utils*}
+function RemoveStart(head: NodePointer):NodePointer;
+begin
+  RemoveStart := head^.Next; 
+end;
+
+procedure RemoveEnd(head: NodePointer);
+var 
+  nav, aux: NodePointer; 
+begin
+  nav := head;
+  while(nav^.Next <> nil) do
+    begin
+      aux := nav;
+      nav := nav^.Next;
+    end;
+  aux^.Next := nil; 
+end;
+
+procedure RemoveX(X:integer; head:NodePointer);
+var
+  nav, aux: NodePointer;
+begin
+  nav := head;
+  while (nav^.Info <> X) do
+    begin
+      aux := nav;
+      nav := nav^.Next;
+    end;
+  aux^.Next := nav^.Next;
+end;
+
+
 {*Main*}
 var
   head: NodePointer;
@@ -108,10 +142,32 @@ var
 begin
   new(head);
   head := Init(1, head);
+  write('Init(1, head): '); 
+  PrintAll(head);
+  writeln('');
   for index := 2 to SIZE do
     AddToEnd(index, head);
+  write('AddToEnd(2-10, head): ');
+  PrintAll(head);
+  writeln('');
   head := AddToStart(0, head); 
-  AddToX(5, 50, head);
-  AddToX(50, 50, head);
-  PrintAll(head); 
+  write('AddToStart(0, head): ');
+  PrintAll(head);
+  writeln('');
+  AddToX(5, 100, head);
+  write('AddToX(5, 100, head): ');
+  PrintAll(head);
+  writeln('');
+  head := RemoveStart(head);
+  write('RemoveStart(head): ');
+  PrintAll(head);
+  writeln('');
+  RemoveEnd(head);
+  write('RemoveEnd(head)');
+  PrintAll(head);
+  writeln('');
+  RemoveX(100, head);
+  write('RemoveX(100, head)');
+  PrintAll(head);
+  writeln('');
 end.
