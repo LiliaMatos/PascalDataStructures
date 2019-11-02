@@ -31,6 +31,17 @@ begin
   head^.Next := nil;
   Init := head;
 end;
+
+function AddToStart(value: integer; head: NodePointer):NodePointer;
+var
+  aux: NodePointer;
+begin
+  new(aux);
+  aux^.Info := value;
+  aux^.Next := head;
+  AddToStart := aux;
+end;
+
 procedure AddToEnd(value:integer; head: NodePointer);
 var
   nav, aux: NodePointer;
@@ -57,6 +68,8 @@ begin
   head := Init(1, head);
   for index := 2 to SIZE do
     AddToEnd(index, head);
+  head := AddToStart(0, head);
+
   PrintAll(head);
 
   
