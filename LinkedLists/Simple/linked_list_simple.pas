@@ -24,6 +24,21 @@ begin
     write(nav^.Info);
     writeln('');
 end;
+
+function SizeOfList(head: NodePointer):integer;
+var 
+  nav: NodePointer;
+  count: integer;
+begin
+  nav := head;
+  count := 0;
+  while(nav <> nil) do
+    begin
+      nav := nav^.Next;
+      count := count + 1;
+    end;
+  SizeOfList := count;
+end;
 {*Creation*}
 function Init(value: integer; head: NodePointer):NodePointer;
 begin
@@ -56,6 +71,33 @@ begin
   aux^.Next := nil;
   nav^.Next := aux; 
 end;
+
+procedure AddToX(X, value:integer; head: NodePointer);
+var
+  nav, aux, node: NodePointer;
+  count: integer;
+begin
+  if (X > SizeOfList(head)) then
+    begin
+      writeln('AddToX: ', X, ' Out of range');
+    end
+  else
+    begin 
+      nav := head;
+      count := 1;
+      while (count < X) do
+        begin
+          aux := nav;
+          nav := nav^.Next;
+          count := count + 1; 
+        end;
+      new(node);
+      node^.Info := value;
+      node^.Next := nav;
+      aux^.Next := node; 
+    end;
+end;
+
 {*Edition*}
 {*Deletion*}
 {*Utils*}
@@ -68,10 +110,8 @@ begin
   head := Init(1, head);
   for index := 2 to SIZE do
     AddToEnd(index, head);
-  head := AddToStart(0, head);
-
-  PrintAll(head);
-
-  
-
+  head := AddToStart(0, head); 
+  AddToX(5, 50, head);
+  AddToX(50, 50, head);
+  PrintAll(head); 
 end.
