@@ -25,17 +25,38 @@ begin
     writeln('');
 end;
 {*Creation*}
+function Init(value: integer; head: NodePointer):NodePointer;
+begin
+  head^.Info := value;
+  head^.Next := nil;
+  Init := head;
+end;
+procedure AddToEnd(value:integer; head: NodePointer);
+var
+  nav, aux: NodePointer;
+begin
+  nav := head;
+  while (nav^.Next <> nil) do
+    begin
+      nav := nav^.Next;
+    end;
+  new(aux);
+  aux^.Info := value;
+  aux^.Next := nil;
+  nav^.Next := aux; 
+end;
 {*Edition*}
 {*Deletion*}
 {*Utils*}
 {*Main*}
 var
-  head, next: NodePointer;
+  head: NodePointer;
   index: integer;
 begin
   new(head);
-  for index := 1 to SIZE do
-    AddToEnd(head);
+  head := Init(1, head);
+  for index := 2 to SIZE do
+    AddToEnd(index, head);
   PrintAll(head);
 
   
