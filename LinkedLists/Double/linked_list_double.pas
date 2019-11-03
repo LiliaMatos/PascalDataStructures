@@ -9,7 +9,7 @@ type
     Prev: NodePointer;
   end;
 
-  {*Init, PrintAllForwards, PrintAllBackWards, AddToStart, AddToEnd, AddToX, AddBetween, RemoveStart, RemoveEnd, RemoveX, SizeOf*}
+{*PrintAllBackWards, RemoveStart, RemoveEnd, RemoveX, SizeOf*}
 
 function Init(value:integer; node: NodePointer):NodePointer;
 begin
@@ -67,6 +67,29 @@ begin
   node^.Prev := aux;
 end;
 
+function RemoveStart(head: NodePointer):NodePointer;
+var 
+  nav: NodePointer;
+begin
+  nav := head;
+  nav := nav^.Next;
+  nav^.Prev := nil;
+  RemoveStart := nav;
+end;
+
+procedure RemoveEnd(head: NodePointer);
+var
+  nav, aux: NodePointer;
+begin
+  nav := head;
+  while(nav^.Next <> nil) do
+    begin
+      aux := nav;
+      nav := nav^.Next;
+    end;
+  aux^.Next := nil;
+end;
+
 procedure PrintAllForwards(head:NodePointer);
 var
   nav: NodePointer;
@@ -80,6 +103,24 @@ begin
     end;
   writeln(nav^.Info); 
 end;
+
+procedure PrintAllBackWards(head:NodePointer);
+var
+  nav: NodePointer;
+begin
+  nav := head;
+  while(nav^.Next <> nil) do
+    nav := nav^.Next;
+  
+  write('Reverse List: ');
+  while(nav^.Prev <> nil) do
+    begin
+      write(nav^.Info, ', ' );
+      nav := nav^.Prev;
+    end;
+  writeln(nav^.Info); 
+end;
+
 
 var
   head: NodePointer;
@@ -102,6 +143,16 @@ begin
   writeln('AddToX(5, 1000, head)');
   AddToX(5, 1000, head);
   PrintAllForwards(head);
-  
+
+  writeln('Write reverse list: ');
+  PrintAllBackWards(head);
+
+  writeln('RemoveStart(head)');
+  head := RemoveStart(head);
+  PrintAllForwards(head);
+
+  writeln('RemoveEnd(head)');
+  RemoveEnd(head);
+  PrintAllForwards(head);
 end.
 
