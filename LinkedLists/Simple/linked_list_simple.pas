@@ -1,4 +1,5 @@
-program LinkedList;
+program LinkedListSimple;
+
 const
   SIZE = 10;
 {*Type definition for a node*}
