@@ -9,8 +9,6 @@ type
     Prev: NodePointer;
   end;
 
-{*PrintAllBackWards, RemoveStart, RemoveEnd, RemoveX, SizeOf*}
-
 function Init(value:integer; node: NodePointer):NodePointer;
 begin
   node^.Info := value;
@@ -90,6 +88,21 @@ begin
   aux^.Next := nil;
 end;
 
+procedure RemoveX(X: integer; head: NodePointer);
+var
+  nav, aux: NodePointer;
+begin
+  nav := head;
+  while(nav^.Info <> X) do
+    begin
+      aux := nav;
+      nav := nav^.Next;
+    end;
+  nav := nav^.Next;
+  aux^.Next := nav;
+  nav^.Prev := aux; 
+end;
+
 procedure PrintAllForwards(head:NodePointer);
 var
   nav: NodePointer;
@@ -121,6 +134,21 @@ begin
   writeln(nav^.Info); 
 end;
 
+function SizeOfList(head: NodePointer):integer;
+var
+  nav: NodePointer;
+  count: integer;
+begin
+  nav := head;
+  count := 0;
+  while(nav <> nil) do
+    begin
+      nav := nav^.Next;
+      count := count + 1;
+    end;
+  SizeOfList := count;
+
+end; 
 
 var
   head: NodePointer;
@@ -154,5 +182,12 @@ begin
   writeln('RemoveEnd(head)');
   RemoveEnd(head);
   PrintAllForwards(head);
+
+  writeln('RemoveX(1000, head)');
+  RemoveX(1000, head);
+  PrintAllForwards(head);
+
+  writeln('SizeOfList(head)');
+  writeln('Size of head: ', SizeOfList(head));
 end.
 
