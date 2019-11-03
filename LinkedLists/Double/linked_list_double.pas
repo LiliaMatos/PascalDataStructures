@@ -9,11 +9,10 @@ type
     Prev: NodePointer;
   end;
 
-  {*Init, PrintAllForwards, PrintAllBackWards, AddToStart, AddToEnd, AddToXForward, AddToXBackward, AddBetween, RemoveStart, RemoveEnd, RemoveX*}
+  {*Init, PrintAllForwards, PrintAllBackWards, AddToStart, AddToEnd, AddToX, AddBetween, RemoveStart, RemoveEnd, RemoveX, SizeOf*}
 
 function Init(value:integer; node: NodePointer):NodePointer;
 begin
-  new(node);
   node^.Info := value;
   node^.Prev := nil;
   node^.Next := nil;
@@ -35,6 +34,39 @@ begin
   nav^.Next := aux;
 end;
 
+function AddToStart(value:integer; head:NodePointer):NodePointer;
+var 
+  nav, aux: NodePointer;
+begin
+  nav := head;
+  new(aux);
+  aux := Init(value, aux);
+  aux^.Next := nav;
+  nav^.Prev := aux;
+  AddToStart := aux;
+end;
+
+procedure AddToX(X, value: integer; head: NodePointer);
+var
+  nav, aux, node: NodePointer;
+  count: integer;
+begin
+  nav := head;
+  count := 1; 
+  while(count < X) do
+    begin
+      aux := nav;
+      nav := nav^.Next;
+      count := count + 1;
+    end;
+  new(node);
+  node := Init(value, node);
+  aux^.Next := node;
+  nav^.Prev := node;
+  node^.Next := nav;
+  node^.Prev := aux;
+end;
+
 procedure PrintAllForwards(head:NodePointer);
 var
   nav: NodePointer;
@@ -46,8 +78,7 @@ begin
       write(nav^.Info, ', ' );
       nav := nav^.Next;
     end;
-  writeln(nav^.Info);
-
+  writeln(nav^.Info); 
 end;
 
 var
@@ -63,5 +94,14 @@ begin
   for index := 2 to 10 do 
     AddToEnd(index, head); 
   PrintAllForwards(head);
+
+  writeln('AddToStart(0, head)');
+  head := AddToStart(0, head);
+  PrintAllForwards(head);
+
+  writeln('AddToX(5, 1000, head)');
+  AddToX(5, 1000, head);
+  PrintAllForwards(head);
+  
 end.
 
