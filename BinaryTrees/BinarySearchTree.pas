@@ -35,8 +35,7 @@ begin
       else
         begin
           node^.Right := AddNode(value, node^.Right);
-        end;
-
+        end; 
       AddNode := node; 
     end;
 end;

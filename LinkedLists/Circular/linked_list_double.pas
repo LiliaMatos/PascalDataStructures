@@ -1,4 +1,4 @@
-program LinkedListDouble;
+program LinkedListCircular;
 
 type
   varInfo = integer;
@@ -9,17 +9,18 @@ type
     Prev: NodePointer;
   end;
 
-function Init(value:integer; node: NodePointer):NodePointer;
+function Init(value: integer; node: NodePointer):NodePointer;
 begin
   node^.Info := value;
-  node^.Prev := nil;
-  node^.Next := nil;
-  Init := node; 
+  node^.Prev := node;
+  node^.Next := node;
+  Init := node;
 end;
 
 procedure AddToEnd(value:integer; head:NodePointer);
 var
   nav, aux: NodePointer;
+  
 begin
   nav := head;
   while(nav^.Next <> nil) do
